@@ -63,18 +63,35 @@ cardDeck.dealCard = function()
     return cardDeck.cards.pop();
 }
 
-function isSameSuit(card_1, card_2, card_3)
+function isSameSuit(cards)
 {
-    var suit = card_1.suit;
-
-    return card_2.suit === suit && card_3.suit === suit;
+    return isSame(cards, "suit");
 }
 
-function isSameValue(card_1, card_2, card_3)
+function isSameValue(cards)
 {
-    var value = card_1.value;
+    return isSame(cards, "value");
+}
 
-    return card_2.value === value && card_3.value === value;
+function isSame(cards, attribute)
+{
+    var isSame = true;
+
+    if(cards.length)
+    {
+        var value = cards[0][attribute];
+
+        cards.forEach(function(card)
+        {
+            if(value != card[attribute])
+            {
+                isSame = false;
+                return isSame;
+            }
+        });
+    }
+
+    return isSame;
 }
 
 function getLowestCard(cards)
@@ -94,19 +111,39 @@ function getLowestCard(cards)
     return lowestCard;
 }
 
-function isAdjacentValue(card_1, card_2, card_3)
+function orderCardList(cards, orderedList)
 {
-    var cards = [card_1, card_2, card_3];
+    orderedList = orderedList || [];
 
-    var low = getLowestCard(cards);
-    cards = cards.reject([low]);
+    if(cards.length)
+    {
+        var lowestCard = getLowestCard(cards);
+        orderedList.push(lowestCard);
 
-    var mid = getLowestCard(cards);
-    cards = cards.reject([mid]);
+        cards = cards.reject([lowestCard]);
+        orderCardList(cards, orderedList);
+    }
 
-    var high = cards[0];
+    return orderedList;
+}
 
-    return high.getOrderPosition() - mid.getOrderPosition() == 1 && mid.getOrderPosition() - low.getOrderPosition() == 1;
+function isAdjacentValues(cards)
+{
+    var orderedCards = orderCardList(cards);
+    
+    var isAdjacentValue = true;
+
+    for(var i = 0; i < orderedCards.length-1; i++)
+    {
+        if(orderedCards[i+1].value - orderedCards[i].value != 1)
+        {
+            isAdjacentValue = false;
+            break;
+        }
+    }
+
+    return isAdjacentValue;
+
 }
 
 function isSet(card_1, card_2, card_3)
@@ -120,16 +157,12 @@ function random(value)
     return Math.floor(Math.random() * value);
 }
 
-//cardDeck.shuffle();
-
-//checkSet(cardDeck.dealCard(), cardDeck.dealCard());
-
 module.exports = 
 {
     cardDeck: cardDeck,
     isSameSuit: isSameSuit,
     isSameValue: isSameValue,
-    isAdjacentValue: isAdjacentValue,
+    isAdjacentValues: isAdjacentValues,
     isSet: isSet,
     getLowestCard: getLowestCard,
     Card: Card
