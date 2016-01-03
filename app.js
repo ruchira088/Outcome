@@ -7,7 +7,11 @@ Card = function(suit, value)
 {
   return {
       suit: suit,
-      value: value
+      value: value,
+      getOrderPosition: function()
+      {
+        return VALUES.indexOf(value);
+      }
   };
 };
 
@@ -24,6 +28,15 @@ cardDeck.cards = SUITS.reduce(function(deck, suit)
 
     return deck;
 }, []);
+
+Array.prototype.reject = function(values)
+{
+    return this.filter(function(value)
+    {
+        return values.indexOf(value) == -1;
+    });
+
+};
 
 cardDeck.shuffle = function(strength)
 {
@@ -50,24 +63,55 @@ cardDeck.dealCard = function()
     return cardDeck.cards.pop();
 }
 
-function isSameSuit(card_1, card_2)
+function isSameSuit(card_1, card_2, card_3)
 {
-    return card_1.suit === card_2.suit;
+    var suit = card_1.suit;
+
+    return card_2.suit === suit && card_3.suit === suit;
 }
 
-function isSameValue(card_1, card_2)
+function isSameValue(card_1, card_2, card_3)
 {
-    return card_1.value === card_2.value;
+    var value = card_1.value;
+
+    return card_2.value === value && card_3.value === value;
 }
 
-function isAdjacentValue(card_1, card_2)
+function getLowestCard(cards)
 {
-    return Math.abs(VALUES.indexOf(card_1.value) - VALUES.indexOf(card_2.value)) === 1;
+    var lowestCard = null;
+
+    cards.forEach(function(card)
+        {
+            lowestCard = lowestCard || card;
+
+            if(lowestCard.getOrderPosition() > card.getOrderPosition())
+            {
+                lowestCard = card;
+            }
+        });
+
+    return lowestCard;
 }
 
-function isSet(card_1, card_2)
+function isAdjacentValue(card_1, card_2, card_3)
 {
-    return isSameValue(card_1, card_2) || (isSameSuit(card_1, card_2) && isAdjacentValue(card_1, card_2));
+    var cards = [card_1, card_2, card_3];
+
+    var low = getLowestCard(cards);
+    cards = cards.reject([low]);
+
+    var mid = getLowestCard(cards);
+    cards = cards.reject([mid]);
+
+    var high = cards[0];
+
+    return high.getOrderPosition() - mid.getOrderPosition() == 1 && mid.getOrderPosition() - low.getOrderPosition() == 1;
+}
+
+function isSet(card_1, card_2, card_3)
+{
+    return isSameValue(card_1, card_2, card_3) || (isSameSuit(card_1, card_2, card_3) && isAdjacentValue(card_1, card_2, card_3));
 
 }
 
@@ -86,6 +130,8 @@ module.exports =
     isSameSuit: isSameSuit,
     isSameValue: isSameValue,
     isAdjacentValue: isAdjacentValue,
-    isSet: isSet
+    isSet: isSet,
+    getLowestCard: getLowestCard,
+    Card: Card
 };
 
