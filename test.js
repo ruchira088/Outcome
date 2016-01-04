@@ -8,6 +8,7 @@ var card_5H = Card("Hearts", "5");
 var card_6H = Card("Hearts", "6");
 var card_7H = Card("Hearts", "7");
 
+var card_2C = Card("Clubs", "2");
 var card_3C = Card("Clubs", "3");
 var card_4C = Card("Clubs", "4");
 var card_5C = Card("Clubs", "5");
@@ -96,24 +97,50 @@ describe(factorial.name, function()
 
 splitCards = app.splitCards;
 
+var cards = [card_2S, card_5S, card_9S];
+
+console.log(splitCards(cards, 2));
+
+
 describe(splitCards.name, function()
 	{
 		it("Verifying the correct number of groups", function()
 		{
 			var cards = [card_2S, card_5S, card_9S, card_5H, card_6H, card_4C];
 
-			assert.equal(splitCards(cards).length, permutations(cards.length, 3));
+			assert.equal(splitCards(cards, 3).length, permutations(cards.length, 3));
 
 			cards.push(card_3C);
-			assert.equal(splitCards(cards).length, permutations(cards.length, 3));
+			assert.equal(splitCards(cards, 3).length, permutations(cards.length, 3));
 
 			cards.push(card_KD);
-			assert.equal(splitCards(cards).length, permutations(cards.length, 3));
+			assert.equal(splitCards(cards, 3).length, permutations(cards.length, 3));
 
 			cards.push(card_6D);
-			assert.equal(splitCards(cards).length, permutations(cards.length, 3));
+			assert.equal(splitCards(cards, 4).length, permutations(cards.length, 4));
+
+			cards.push(card_8D);
+			assert.equal(splitCards(cards, 2).length, permutations(cards.length, 2));
+
+			cards.push(card_2C);
+			assert.equal(splitCards(cards, 6).length, permutations(cards.length, 6));
+
+			cards.push(card_7H);
+			assert.equal(splitCards(cards, 5).length, permutations(cards.length, 5));
 		});
 	});
+//
+//findSets = app.findSets;
+//
+//describe(findSets.name, function()
+//	{
+//		it("Finding sets from an array of cards", function()
+//			{
+//				var cards = [card_2S, card_2C, card_5S, card_9S, card_5H, card_6H, card_4C, card_7H, card_5C, card_3C];
+//				findSets(cards);
+//				//assert.equal(findSets(cards).length, 4);
+//			});
+//	});
 
 function permutations(n, k)
 {

@@ -38,6 +38,11 @@ Array.prototype.reject = function(values)
 
 };
 
+Array.prototype.clone = function()
+{
+    return this.filter(function(){ return true;});
+};
+
 cardDeck.shuffle = function(strength)
 {
     strength =  strength || SHUFFLE_STRENGTH;
@@ -131,24 +136,37 @@ function isAdjacentValues(cards)
 {
     var orderedCards = orderCardList(cards);
     
-    var isAdjacentValue = true;
+    var isAdjacent = true;
 
     for(var i = 0; i < orderedCards.length-1; i++)
     {
         if(orderedCards[i+1].value - orderedCards[i].value != 1)
         {
-            isAdjacentValue = false;
+            isAdjacent = false;
             break;
         }
     }
 
-    return isAdjacentValue;
+    return isAdjacent;
 }
 
 function isSet(cards)
 {
-    return isSameValue(cards) || (isSameSuit(cards) && isAdjacentValue(cards));
+    return isSameValue(cards) || (isSameSuit(cards) && isAdjacentValues(cards));
 
+}
+
+function findSets(cards)
+{
+    var cardGroups = splitCards(cards);
+
+    cardGroups.forEach(function(cardGroup)
+        {
+            if(isSet(cardGroup))
+            {
+                console.log(cardGroup);
+            }
+        });
 }
 
 function random(value)
@@ -156,31 +174,54 @@ function random(value)
     return Math.floor(Math.random() * value);
 }
 
-function splitCards(cards)
+function splitCards(cards, n, cardGroups, groupCards)
 {
-    var tempCards = cards;
-    var cardGroups = [];
+    cardGroups = cardGroups || [];
+    groupCards = groupCards || [];
 
-
-   cards.forEach(function(card)
+    if(n)
     {
-        tempCards = tempCards.reject([card]);
-        var tempCards_2 = tempCards;
-        
-        tempCards.forEach(function(card_1)
-            {
-                tempCards_2 = tempCards_2.reject([card_1]);
-
-                tempCards_2.forEach(function(card_2)
-                {
-                    var cardGroup = [card, card_1, card_2];
-                    cardGroups.push(cardGroup);
-                });
-            });
-    });
-
+        cards.forEach(function(card)
+        {
+            var tempCards = groupCards.clone();
+            tempCards.push(card);
+            cards = cards.reject([card]);
+            splitCards(cards, n-1, cardGroups, tempCards);
+        });
+    }
+    else
+    {
+        cardGroups.push(groupCards);
+    }
+    
    return cardGroups;
 }
+
+// function splitCards(cards)
+// {
+//     var tempCards = cards;
+//     var cardGroups = [];
+
+
+//    cards.forEach(function(card)
+//     {
+//         tempCards = tempCards.reject([card]);
+//         var tempCards_2 = tempCards;
+        
+//         tempCards.forEach(function(card_1)
+//             {
+//                 tempCards_2 = tempCards_2.reject([card_1]);
+
+//                 tempCards_2.forEach(function(card_2)
+//                 {
+//                     var cardGroup = [card, card_1, card_2];
+//                     cardGroups.push(cardGroup);
+//                 });
+//             });
+//     });
+
+//    return cardGroups;
+// }
 
 module.exports = 
 {
@@ -191,6 +232,7 @@ module.exports =
     isSet: isSet,
     getLowestCard: getLowestCard,
     splitCards: splitCards,
+    findSets: findSets,
     Card: Card
 };
 
