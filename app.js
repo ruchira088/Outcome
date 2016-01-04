@@ -143,18 +143,43 @@ function isAdjacentValues(cards)
     }
 
     return isAdjacentValue;
-
 }
 
-function isSet(card_1, card_2, card_3)
+function isSet(cards)
 {
-    return isSameValue(card_1, card_2, card_3) || (isSameSuit(card_1, card_2, card_3) && isAdjacentValue(card_1, card_2, card_3));
+    return isSameValue(cards) || (isSameSuit(cards) && isAdjacentValue(cards));
 
 }
 
 function random(value)
 {
     return Math.floor(Math.random() * value);
+}
+
+function splitCards(cards)
+{
+    var tempCards = cards;
+    var cardGroups = [];
+
+
+   cards.forEach(function(card)
+    {
+        tempCards = tempCards.reject([card]);
+        var tempCards_2 = tempCards;
+        
+        tempCards.forEach(function(card_1)
+            {
+                tempCards_2 = tempCards_2.reject([card_1]);
+
+                tempCards_2.forEach(function(card_2)
+                {
+                    var cardGroup = [card, card_1, card_2];
+                    cardGroups.push(cardGroup);
+                });
+            });
+    });
+
+   return cardGroups;
 }
 
 module.exports = 
@@ -165,6 +190,7 @@ module.exports =
     isAdjacentValues: isAdjacentValues,
     isSet: isSet,
     getLowestCard: getLowestCard,
+    splitCards: splitCards,
     Card: Card
 };
 

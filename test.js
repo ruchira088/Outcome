@@ -77,3 +77,56 @@ describe(isAdjacentValues.name, function()
 			genericFail(isAdjacentValues);
 		});
 	});
+
+
+describe(factorial.name, function()
+	{
+		it("Verifying factorial output", function()
+			{
+				assert.equal(factorial(0), 1);
+				assert.equal(factorial(1), 1);
+				assert.equal(factorial(2), 2);
+				assert.equal(factorial(3), 6);
+				assert.equal(factorial(4), 24);
+				assert.equal(factorial(5), 120);
+				assert.equal(factorial(6), 720);
+
+			});
+	});
+
+splitCards = app.splitCards;
+
+describe(splitCards.name, function()
+	{
+		it("Verifying the correct number of groups", function()
+		{
+			var cards = [card_2S, card_5S, card_9S, card_5H, card_6H, card_4C];
+
+			assert.equal(splitCards(cards).length, permutations(cards.length, 3));
+
+			cards.push(card_3C);
+			assert.equal(splitCards(cards).length, permutations(cards.length, 3));
+
+			cards.push(card_KD);
+			assert.equal(splitCards(cards).length, permutations(cards.length, 3));
+
+			cards.push(card_6D);
+			assert.equal(splitCards(cards).length, permutations(cards.length, 3));
+		});
+	});
+
+function permutations(n, k)
+{
+	return factorial(n)/(factorial(n-k)*factorial(k));
+}
+
+function factorial(n)
+{
+	if(!n)
+	{
+		return 1;
+	}
+
+	return n * factorial(n-1); 
+}
+
