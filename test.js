@@ -18,6 +18,7 @@ var card_5S = Card("Spades", "5");
 var card_9S = Card("Spades", "9"); 
 
 var card_6D = Card("Diamonds", "6");
+var card_7D = Card("Diamonds", "7");
 var card_8D = Card("Diamonds", "8");
 var card_KD = Card("Diamonds", "King"); 
 
@@ -97,11 +98,6 @@ describe(factorial.name, function()
 
 splitCards = app.splitCards;
 
-var cards = [card_2S, card_5S, card_9S];
-
-console.log(splitCards(cards, 2));
-
-
 describe(splitCards.name, function()
 	{
 		it("Verifying the correct number of groups", function()
@@ -129,18 +125,52 @@ describe(splitCards.name, function()
 			assert.equal(splitCards(cards, 5).length, permutations(cards.length, 5));
 		});
 	});
-//
-//findSets = app.findSets;
-//
-//describe(findSets.name, function()
-//	{
-//		it("Finding sets from an array of cards", function()
-//			{
-//				var cards = [card_2S, card_2C, card_5S, card_9S, card_5H, card_6H, card_4C, card_7H, card_5C, card_3C];
-//				findSets(cards);
-//				//assert.equal(findSets(cards).length, 4);
-//			});
-//	});
+
+findSets = app.findSets;
+
+describe(findSets.name, function()
+	{
+		it("Finding sets from an array of cards", function()
+			{
+				var cards = [card_2S, card_2C, card_5S, card_9S, card_5H, card_6H, card_4C, card_7H, card_5C, card_3C];
+				assert.equal(findSets(cards, 3).length, 4);
+				assert.equal(findSets(cards, 4).length, 1);
+			});
+	});
+
+hasWinningHand = app.hasWinningHand;
+
+describe(hasWinningHand.name, function()
+	{
+		it("Checking for winning hands", function()
+			{
+				var cards = [card_5S, card_5H, card_5C];
+				assert(hasWinningHand(cards, [3]).result, "This is a winning hand.");
+
+				cards = [card_5C, card_6H, card_3C, card_7H, card_4C, card_5H];
+				assert(hasWinningHand(cards).result, "This is a winning hand.");
+
+				cards = [card_5C, card_6H, card_3C, card_7H, card_4C, card_5H, card_2C];
+				assert(hasWinningHand(cards, [4, 3]).result, "This is a winning hand.");
+
+			 	cards = [card_5H, card_6H, card_7H, card_3C, card_4C, card_KD];
+				assert(!hasWinningHand(cards).result, "This is NOT a winning hand.");
+			});
+	});
+
+isWinner = app.isWinner;
+
+describe(isWinner.name, function()
+	{
+		it("Checking for a winner", function()
+			{
+				cards = [card_5C, card_6H, card_7D, card_3C, card_7H, card_4C, card_5H, card_2C, card_6D];
+				assert(isWinner(cards).result, "This is a winner");
+
+				cards = [card_5C, card_6H, card_7D, card_3C, card_7H, card_4C, card_5H, card_2C, card_KD];
+				assert(!isWinner(cards).result, "This is NOT a winner");
+			});
+	});
 
 function permutations(n, k)
 {

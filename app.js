@@ -156,17 +156,20 @@ function isSet(cards)
 
 }
 
-function findSets(cards)
+function findSets(cards, cardsInASet)
 {
-    var cardGroups = splitCards(cards);
+    var sets = [];
+    var cardGroups = splitCards(cards, cardsInASet);
 
     cardGroups.forEach(function(cardGroup)
         {
             if(isSet(cardGroup))
             {
-                console.log(cardGroup);
+                sets.push(cardGroup);
             }
         });
+
+    return sets;
 }
 
 function random(value)
@@ -197,30 +200,70 @@ function splitCards(cards, n, cardGroups, groupCards)
    return cardGroups;
 }
 
-// function splitCards(cards)
+function isWinner(cards)
+{
+    var winningCards = hasWinningHand(cards);
+
+    if(winningCards.result)
+    {
+        return winningCards;
+    }
+
+    return hasWinningHand(cards, [4, 3, 2]);
+}
+
+function hasWinningHand(cards, groups)
+{
+    var sets = arguments[2];
+
+    if(!sets)
+    {
+        sets = [];
+        groups = groups || [];
+        groups.reverse();
+    }
+
+    if(!cards.length)
+    {
+        return {result: true, cardSets: sets};
+    }
+
+    var cardSets = findSets(cards, groups.pop() || 3);
+
+    for(var i=0; i < cardSets.length; i++)
+    {
+        var currentSets = sets.clone();
+        currentSets.push(cardSets[i]);
+
+        var isWinner = hasWinningHand(cards.reject(cardSets[i]), groups.clone(), currentSets);
+
+        if(isWinner.result)
+        {
+            return isWinner;
+        }
+    }
+
+    return {result: false};
+}
+
+// function hasWinningHand(cards)
 // {
-//     var tempCards = cards;
-//     var cardGroups = [];
-
-
-//    cards.forEach(function(card)
+//     if(!cards.length)
 //     {
-//         tempCards = tempCards.reject([card]);
-//         var tempCards_2 = tempCards;
-        
-//         tempCards.forEach(function(card_1)
-//             {
-//                 tempCards_2 = tempCards_2.reject([card_1]);
+//         return true;
+//     }
 
-//                 tempCards_2.forEach(function(card_2)
-//                 {
-//                     var cardGroup = [card, card_1, card_2];
-//                     cardGroups.push(cardGroup);
-//                 });
-//             });
-//     });
+//     var cardSets = findSets(cards, 3);
 
-//    return cardGroups;
+//     for(var i=0; i < cardSets.length; i++)
+//     {
+//         if(hasWinningHand(cards.reject(cardSets[i])))
+//         {
+//             return true;
+//         }
+//     }
+
+//     return false;
 // }
 
 module.exports = 
@@ -233,6 +276,8 @@ module.exports =
     getLowestCard: getLowestCard,
     splitCards: splitCards,
     findSets: findSets,
+    hasWinningHand: hasWinningHand,
+    isWinner: isWinner,
     Card: Card
 };
 
