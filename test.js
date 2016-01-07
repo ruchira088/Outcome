@@ -167,6 +167,9 @@ describe(isWinner.name, function()
 				cards = [card_5C, card_6H, card_7D, card_3C, card_7H, card_4C, card_5H, card_2C, card_6D];
 				assert(isWinner(cards).result, "This is a winner");
 
+				cards = [card_5C, card_6H, card_7D, card_3C, card_7H, card_4C, card_5H, card_8D, card_6D];
+				assert(isWinner(cards).result, "This is a winner");
+
 				cards = [card_5C, card_6H, card_7D, card_3C, card_7H, card_4C, card_5H, card_2C, card_KD];
 				assert(!isWinner(cards).result, "This is NOT a winner");
 			});
