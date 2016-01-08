@@ -1,7 +1,7 @@
 
-const SUITS = ["Hearts", "Spades", "Diamonds", "Clubs"];
+const SUITS = ["hearts", "spades", "diamonds", "clubs"];
 const SHUFFLE_STRENGTH = 10;
-const VALUES = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace"];
+const VALUES = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen", "king", "ace"];
 
 Card = function(suit, value)
 {
@@ -140,7 +140,7 @@ function isAdjacentValues(cards)
 
     for(var i = 0; i < orderedCards.length-1; i++)
     {
-        if(orderedCards[i+1].value - orderedCards[i].value != 1)
+        if(VALUES.indexOf(orderedCards[i+1].value) - VALUES.indexOf(orderedCards[i].value) != 1)
         {
             isAdjacent = false;
             break;

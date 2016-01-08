@@ -4,23 +4,25 @@ cardDeck = app.cardDeck;
 
 assert = require("assert");
 
-var card_5H = Card("Hearts", "5");
-var card_6H = Card("Hearts", "6");
-var card_7H = Card("Hearts", "7");
+var card_5H = Card("hearts", "5");
+var card_6H = Card("hearts", "6");
+var card_7H = Card("hearts", "7");
 
-var card_2C = Card("Clubs", "2");
-var card_3C = Card("Clubs", "3");
-var card_4C = Card("Clubs", "4");
-var card_5C = Card("Clubs", "5");
+var card_2C = Card("clubs", "2");
+var card_3C = Card("clubs", "3");
+var card_4C = Card("clubs", "4");
+var card_5C = Card("clubs", "5");
 
-var card_2S = Card("Spades", "2");
-var card_5S = Card("Spades", "5");
-var card_9S = Card("Spades", "9"); 
+var card_2S = Card("spades", "2");
+var card_5S = Card("spades", "5");
+var card_9S = Card("spades", "9");
 
-var card_6D = Card("Diamonds", "6");
-var card_7D = Card("Diamonds", "7");
-var card_8D = Card("Diamonds", "8");
-var card_KD = Card("Diamonds", "King"); 
+var card_6D = Card("diamonds", "6");
+var card_7D = Card("diamonds", "7");
+var card_8D = Card("diamonds", "8");
+var card_JD = Card("diamonds", "jack");
+var card_QD = Card("diamonds", "queen");
+var card_KD = Card("diamonds", "king"); 
 
 genericFail = function(functionValue)
 {
@@ -69,6 +71,7 @@ describe(isAdjacentValues.name, function()
 		{
 
 			assert.equal(isAdjacentValues([card_5H, card_7H, card_6H]), true);
+			assert.equal(isAdjacentValues([card_JD, card_KD, card_QD]), true);
 			assert.equal(isAdjacentValues([card_8D, card_9S, card_7H]), true);
 			assert.equal(isAdjacentValues([card_2S, card_3C, card_4C]), true);
 			assert.equal(isAdjacentValues([card_8D, card_6D, card_7H]), true);
