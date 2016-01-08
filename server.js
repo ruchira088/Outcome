@@ -8,6 +8,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.use("/", function(request, response)
 	{
+		console.log(request.body);
 		var cards = request.body.cards.map(function(card)
 			{
 				var cardValues = card.split("_");
