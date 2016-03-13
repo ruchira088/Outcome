@@ -8,14 +8,22 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.use("/", function(request, response)
 	{
-		console.log(request.body);
+		const ID = (function()
+		{
+			return Math.random().toString(36).slice(2);
+		})();
+
+		console.log("Entry ID: " + ID + ", " + JSON.stringify(request.body));
+
 		var cards = request.body.cards.map(function(card)
 			{
 				var cardValues = card.split("_");
 				return Card(cardValues[1], cardValues[0]);
 			});
-
 		var outcome = JSON.stringify(isWinner(cards));
+
+		console.log("Exit ID: " + ID + ", " + JSON.stringify(outcome));
+
 		response.end(outcome);
 	}
 );
