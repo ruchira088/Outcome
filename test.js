@@ -176,6 +176,10 @@ describe(isWinner.name, function()
 	{
 		it("Checking for a winner", function()
 			{
+				var cards = [card_AC, card_2C, card_3C, card_5H, card_7H, card_6H, card_JD, card_KD, card_QD];
+				var winner = isWinner(cards);
+				assert(winner.result, "This is a winner");
+
 				cards = [card_5C, card_6H, card_7D, card_3C, card_7H, card_4C, card_5H, card_2C, card_6D];
 				assert(isWinner(cards).result, "This is a winner");
 

@@ -8,6 +8,15 @@ Card = function(suit, value)
   return {
       suit: suit,
       value: value,
+      clone: function()
+      {
+          return Card(this.suit, this.value);
+      },
+      setValue: function(value)
+      {
+          this.value = value;
+          return this;
+      },
       getOrderPosition: function()
       {
         return VALUES.indexOf(this.value);
@@ -154,7 +163,7 @@ function isAdjacentValues(cards)
         if(hasAce.hasAce)
         {
             const newCards = cards.slice();
-            newCards[hasAce.index].value = "1";
+            newCards[hasAce.index] = newCards[hasAce.index].clone().setValue("1");
 
             return isAdjacentValues(newCards);
         }
@@ -197,7 +206,7 @@ function findSets(cards, cardsInASet)
         {
             if(isSet(cardGroup))
             {
-                sets.push(cardGroup);
+                sets.push(orderCardList(cardGroup));
             }
         });
 
@@ -278,27 +287,7 @@ function hasWinningHand(cards, groups)
     return {result: false};
 }
 
-// function hasWinningHand(cards)
-// {
-//     if(!cards.length)
-//     {
-//         return true;
-//     }
-
-//     var cardSets = findSets(cards, 3);
-
-//     for(var i=0; i < cardSets.length; i++)
-//     {
-//         if(hasWinningHand(cards.reject(cardSets[i])))
-//         {
-//             return true;
-//         }
-//     }
-
-//     return false;
-// }
-
-module.exports = 
+module.exports =
 {
     cardDeck: cardDeck,
     isSameSuit: isSameSuit,
