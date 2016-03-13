@@ -153,8 +153,10 @@ function isAdjacentValues(cards)
 
         if(hasAce.hasAce)
         {
-            cards[hasAce.index].value = "1";
-            return isAdjacentValues(cards);
+            const newCards = cards.slice();
+            newCards[hasAce.index].value = "1";
+
+            return isAdjacentValues(newCards);
         }
     }
 
