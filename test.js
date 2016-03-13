@@ -8,14 +8,17 @@ var card_5H = Card("hearts", "5");
 var card_6H = Card("hearts", "6");
 var card_7H = Card("hearts", "7");
 
+var card_AC = Card("clubs", "ace");
 var card_2C = Card("clubs", "2");
 var card_3C = Card("clubs", "3");
 var card_4C = Card("clubs", "4");
 var card_5C = Card("clubs", "5");
 
+var card_AS = Card("spades", "ace");
 var card_2S = Card("spades", "2");
 var card_5S = Card("spades", "5");
 var card_9S = Card("spades", "9");
+var card_10S = Card("spades", "10");
 
 var card_6D = Card("diamonds", "6");
 var card_7D = Card("diamonds", "7");
@@ -73,7 +76,13 @@ describe(isAdjacentValues.name, function()
 			assert.equal(isAdjacentValues([card_5H, card_7H, card_6H]), true);
 			assert.equal(isAdjacentValues([card_JD, card_KD, card_QD]), true);
 			assert.equal(isAdjacentValues([card_8D, card_9S, card_7H]), true);
-			assert.equal(isAdjacentValues([card_2S, card_3C, card_4C]), true);
+			assert.equal(isAdjacentValues([card_2S, card_3C, card_4C, card_5C]), true);
+			assert.equal(isAdjacentValues([card_AC, card_2S, card_3C]), true);
+			assert.equal(isAdjacentValues([
+				card_AC, card_2S, card_3C, card_4C, card_5C, card_6D, card_7H, card_8D, card_9S, card_10S,
+				card_JD, card_QD, card_KD, card_AS
+			]), true);
+			assert.equal(isAdjacentValues([card_AC, card_2S, card_KD]), false);
 			assert.equal(isAdjacentValues([card_8D, card_6D, card_7H]), true);
 		});
 

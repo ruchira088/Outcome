@@ -1,7 +1,7 @@
 
 const SUITS = ["hearts", "spades", "diamonds", "clubs"];
 const SHUFFLE_STRENGTH = 10;
-const VALUES = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen", "king", "ace"];
+const VALUES = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen", "king", "ace"];
 
 Card = function(suit, value)
 {
@@ -10,7 +10,7 @@ Card = function(suit, value)
       value: value,
       getOrderPosition: function()
       {
-        return VALUES.indexOf(value);
+        return VALUES.indexOf(this.value);
       }
   };
 };
@@ -145,6 +145,36 @@ function isAdjacentValues(cards)
             isAdjacent = false;
             break;
         }
+    }
+
+    if(!isAdjacent)
+    {
+        const hasAce = containsAce();
+
+        if(hasAce.hasAce)
+        {
+            cards[hasAce.index].value = "1";
+            return isAdjacentValues(cards);
+        }
+    }
+
+    function containsAce()
+    {
+        return cards.reduce((output, card) =>
+        {
+            if(!output.hasAce && card.value === "ace")
+            {
+                return {
+                    hasAce: true,
+                    index: cards.indexOf(card)
+                };
+            }
+
+            return output;
+
+        }, {
+            hasAce: false
+        });
     }
 
     return isAdjacent;

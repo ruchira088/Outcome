@@ -17,7 +17,7 @@ app.use("/", function(request, response)
 
 		var outcome = JSON.stringify(isWinner(cards));
 		response.end(outcome);
-	});
+	}
+);
 
 app.listen(3001);
-
